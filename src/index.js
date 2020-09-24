@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import Page from './client/Page.js';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    }
+}
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+<ApolloProvider client={client}>
+	<Router>
+    <Page />
+    </Router>
+  </ApolloProvider>,
   </React.StrictMode>,
   document.getElementById('root')
 );
